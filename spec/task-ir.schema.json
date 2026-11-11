@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "S2SC unprivileged candidate Task IR v1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ir_version",
+    "intent",
+    "arguments",
+    "constraints",
+    "status",
+    "source"
+  ],
+  "properties": {
+    "ir_version": {
+      "const": "1.0.0"
+    },
+    "intent": {
+      "enum": [
+        "FETCH_AND_RETURN",
+        "STOP"
+      ]
+    },
+    "status": {
+      "const": "PROPOSED"
+    },
+    "arguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "object": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "class",
+            "color"
+          ],
+          "properties": {
+            "class": {
+              "const": "bottle"
+            },
+            "color": {
+              "enum": [
+                "blue",
+                "red"
+              ]
+            },
+            "location_hint": {
+              "type": "string",
+              "maxLength": 64
+            }
+          }
+        },
+        "return_reference": {
+          "const": "mission_start"
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_speed_mps",
+        "max_payload_kg"
+      ],
+      "properties": {
+        "max_speed_mps": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.25
+        },
+        "max_payload_kg": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.3
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language",
+        "mode"
+      ],
+      "properties": {
+        "language": {
+          "const": "vi"
+        },
+        "mode": {
+          "const": "typed-demo"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "intent": {
+            "const": "FETCH_AND_RETURN"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "arguments": {
+            "required": [
+              "object",
+              "return_reference"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
