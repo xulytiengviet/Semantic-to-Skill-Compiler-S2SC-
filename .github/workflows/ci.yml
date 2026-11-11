@@ -1,0 +1,27 @@
+name: S2SC symbolic tests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: npm run check
+      - name: Unit and fault-injection tests
+        run: npm test
+      - name: Check research website files
+        run: |
+          test -s docs/index.html
+          test -s docs/styles.css
+          test -s docs/core.js
+          test -s docs/app.js
+          test -s docs/architecture.md
