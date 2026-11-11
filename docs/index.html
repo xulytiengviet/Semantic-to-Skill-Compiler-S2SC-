@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="S2SC: a safety-governed Vietnamese Semantic-to-Skill Compiler. Research preprint, typed Task IR, world-grounding and Base27 ternary browser simulation for FPGA–ARM robotics.">
+<meta name="theme-color" content="#0a1520">
+<title>S2SC | Safety-Governed Vietnamese Semantic-to-Skill Compilation</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap header-row">
+  <a class="logo" href="#top" aria-label="S2SC home"><span class="logo-mark">S²</span><span>S2SC <small>RESEARCH LAB</small></span></a>
+  <nav aria-label="Main navigation"><a href="#overview">Overview</a><a href="#architecture">Architecture</a><a href="#grounding">Grounding</a><a href="#simulator">Live simulator</a><a href="#methods">Evaluation</a><a href="#references">References</a></nav>
+  <a class="top-link" href="https://github.com/xulytiengviet/Semantic-to-Skill-Compiler-S2SC-" target="_blank" rel="noopener">GitHub ↗</a>
+</div></header>
+<main id="main">
+<section class="hero wrap" id="top">
+  <div class="hero-meta"><span class="dot"></span> RESEARCH PREPRINT / SYSTEMS PROPOSAL <span class="divider-inline">·</span> SPECIFICATION V1.0 <span class="divider-inline">·</span> 11 NOV 2026</div>
+  <div class="hero-grid">
+    <div><p class="eyebrow">Vietnamese Embodied AI · Hybrid FPGA–ARM Robotics</p>
+      <h1>A Safety-Governed Vietnamese <em>Semantic-to-Skill</em> Compilation Framework</h1>
+      <p class="lead">From speech hypotheses and symbolic CVNSS4.0 representation to typed task contracts, observed-world grounding, verified skill transitions and feedback-controlled robotics.</p>
+      <div class="hero-actions"><a class="btn primary" href="#simulator">Launch interactive simulation <span>↗</span></a><a class="btn secondary" href="#architecture">Explore system design</a></div>
+      <p class="byline">Long Ngo · Open research prototype · English project page · <a href="https://github.com/xulytiengviet/Semantic-to-Skill-Compiler-S2SC-/blob/main/LICENSE">MIT code license</a></p>
+    </div>
+    <div class="hero-aside"><div class="system-title">RESEARCH POSITIONING</div>
+      <div class="signal-flow"><span>VI SPEECH</span><b>→</b><span>INTENT</span><b>→</b><span>TYPED IR</span></div>
+      <div class="signal-flow"><span>WORLD</span><b>→</b><span>SKILL</span><b>→</b><span>CONTROL</span></div>
+      <div class="rule"></div><div class="metric-label">A claim we do <strong>not</strong> make</div>
+      <p class="aside-text">A type-safe Task IR is <strong>not functional-safety certification</strong>. This website's planner runs entirely in a synthetic grid world; no real robot, ASR model, CVNSS codec or FPGA bitstream is being executed.</p>
+      <div class="pill-row"><span class="pill">RESEARCH ONLY</span><span class="pill">NO ACTUATION</span><span class="pill">REPRODUCIBLE DEMO</span></div>
+    </div>
+  </div>
+  <div class="hero-foot"><span>01 / PROBLEM</span><span>02 / ARCHITECTURE</span><span>03 / WORLD GROUNDING</span><span>04 / LIVE DEMO</span></div>
+</section>
+<section class="section light" id="overview"><div class="wrap">
+  <p class="eyebrow ink">01 — Abstract & contributions</p><h2>Language correctness does not imply physical feasibility.</h2>
+  <div class="two-col"><p class="body-lg">A robot can correctly transcribe “bring the blue bottle and return” yet fail because the object is missing, the map is stale, the path is blocked, or grasp has not been verified. S2SC proposes a typed and monitored interface between probabilistic language modules and physically grounded robot skills.</p><p class="body-lg">We separate symbolic decoding from perception, static type checks from runtime safety, task planning from motor control, and experiment hypotheses from empirical results. The first artifact is a deterministic browser grid-world, designed to make failure cases and evidence visible.</p></div>
+  <div class="contributions">
+    <article class="feature"><div class="num">C1</div><h3>Bounded language bridge</h3><p>ASR / direct SLU plus optional CVNSS4.0 FST and TinyLM rescoring. Neither component commands motors or asserts physical truth.</p></article>
+    <article class="feature"><div class="num">C2</div><h3>Typed Task IR</h3><p>Explicit versions, units, constraints, provenance and an unprivileged PROPOSED state with validation and rejection.</p></article>
+    <article class="feature"><div class="num">C3</div><h3>Evidence-based grounding</h3><p>Object class, visual observation age, localization, path existence, payload affordance and battery reserve.</p></article>
+    <article class="feature"><div class="num">C4</div><h3>Skill contracts & verification</h3><p>Bounded planning, action feedback, failure codes, postcondition tests and independent safety intervention.</p></article>
+  </div>
+</div></section>
+<section class="section" id="architecture"><div class="wrap">
+  <p class="eyebrow">02 — Hardware–software co-design</p><h2>Three operational layers.<br><em>One independent safety boundary.</em></h2>
+  <div class="architecture">
+    <div class="arch-stage"><div class="stage-head"><span>01</span><strong>Speech and semantic compilation</strong><small>CPU · ARM · OPTIONAL FPGA DSP</small></div><p>Microphone → AFE / ASR or direct SLU → optional CVNSS-FST / TinyLM → candidate Task IR → type checker.</p><div class="chips"><span>VOICE</span><span>CTC / INTENT</span><span>CVNSS4.0*</span><span>IR</span></div></div>
+    <div class="arch-arrow">↓ typed proposed goal, never raw torque</div>
+    <div class="arch-stage"><div class="stage-head"><span>02</span><strong>World grounding and planning</strong><small>CPU · NPU / GPU · OPTIONAL VLM</small></div><p>Camera and sensors → scene observation and localization → object binding → feasibility / authorization → bounded task plan.</p><div class="chips"><span>SLAM</span><span>OBJECT POSE</span><span>AFFORDANCE</span><span>BEHAVIOR TREE</span></div></div>
+    <div class="arch-arrow">↓ admitted, time-bounded skill goals</div>
+    <div class="arch-stage"><div class="stage-head"><span>03</span><strong>Skill execution and feedback control</strong><small>MCU · FPGA FABRIC · MOTOR DRIVERS</small></div><p>Verified skill interface → monitored trajectory/controller → actuator and sensor feedback → observed postcondition.</p><div class="chips"><span>PID / MPC</span><span>IMU</span><span>ENCODER</span><span>WATCHDOG</span></div></div>
+    <div class="safety-band"><strong>↔ Cross-cutting safety supervisor</strong><span>E-stop · permissions · heartbeat · timeout · stale-state rejection · fail-safe stop</span></div>
+  </div>
+  <div class="note"><b>Scope constraint.</b> *CVNSS is a rule-governed Vietnamese orthographic representation, not a phoneme recognition model. The browser application does not implement the complete CVNSS4.0 rules. Real FPGA allocation follows profiling, not architectural fashion.</div>
+</div></section>
+<section class="section light" id="grounding"><div class="wrap">
+  <p class="eyebrow ink">03 — Why world grounding matters</p><h2>From a word to a physical referent.</h2>
+  <p class="body-lg wide">“Blue bottle” is an <b>unresolved linguistic reference</b> until the robot can associate it with a sensed object, a localization frame, a sufficiently recent observation and a feasible skill. Grounding is not a single VLM yes/no prediction; it is an evidence chain that must remain valid while acting.</p>
+  <div class="ground-grid">
+    <div class="ground-card"><span>G₁</span><h3>Referent binding</h3><p>Does a detected object match type, color and location? Is this the correct instance among distractors?</p><small>Output: bound object ID + observation score</small></div>
+    <div class="ground-card"><span>G₂</span><h3>Pose & time</h3><p>Is the map frame known? Is the pose recent? Are observation and robot frames consistent?</p><small>Output: frame, timestamp, uncertainty</small></div>
+    <div class="ground-card"><span>G₃</span><h3>Affordance</h3><p>Can this robot reach and manipulate that object given payload, geometry, obstacles and energy?</p><small>Output: admissible skill preconditions</small></div>
+    <div class="ground-card"><span>G₄</span><h3>Runtime revalidation</h3><p>Recheck moving obstacles and postconditions. Grounding can become stale between check and use.</p><small>Output: continue / replan / stop</small></div>
+  </div>
+  <div class="math-line">Admit(T,W) = WellTyped(T) ∧ Grounded(T,W) ∧ Authorized(T) ∧ Feasible(T,W) ∧ Fresh(W)</div>
+  <p class="caption">This is a software admission predicate, not a formal guarantee of functional safety in a physical environment.</p>
+</div></section>
+<section class="section demo-section" id="simulator"><div class="wrap">
+  <div class="section-head"><div><p class="eyebrow">04 — Interactive executable artifact</p><h2>Robot fetch-and-return.<br><em>Grounding you can inspect.</em></h2></div><span class="demo-flag">DETERMINISTIC GRID-WORLD · NO HARDWARE</span></div>
+  <div class="demo-controls">
+    <label>Vietnamese instruction <input id="utterance" spellcheck="false" value="Lấy chai nước màu xanh trên bàn số hai rồi quay lại chỗ cũ." aria-label="Vietnamese instruction"></label>
+    <label>Failure-injection scenario <select id="scenario" aria-label="Failure scenario">
+      <option value="nominal">Nominal — target visible</option>
+      <option value="missing">Missing object</option>
+      <option value="stale">Stale perception evidence</option>
+      <option value="blocked">Blocked return path</option>
+      <option value="low-battery">Insufficient battery reserve</option>
+      <option value="grasp-fail">Grasp postcondition failure</option>
+      <option value="dynamic-obstacle">Obstacle added during execution</option>
+    </select></label>
+    <div class="demo-buttons"><button class="btn primary" id="compile">Compile & ground</button><button class="btn secondary" id="step" disabled>Step</button><button class="btn secondary" id="play" disabled>Auto-run</button><button class="btn ghost" id="reset">Reset</button><button class="btn danger" id="estop">E-STOP</button></div>
+  </div>
+  <div class="demo-main">
+    <div class="sim-panel">
+      <div class="panel-title"><span>SIMULATED MAP / FRAME: map</span><span id="mission-state" class="status">IDLE</span></div>
+      <svg id="world-map" viewBox="0 0 660 480" role="img" aria-label="Grid-world robot map with home, target, and obstacles"></svg>
+      <div class="map-legend"><span><i class="legend robot"></i> Robot</span><span><i class="legend home"></i> Home</span><span><i class="legend object"></i> Bottle</span><span><i class="legend obstacle"></i> Obstacle</span><span><i class="legend trace"></i> Planned route</span></div>
+      <div class="sim-stats"><div><small>POSITION</small><strong id="robot-pose">1, 6</strong></div><div><small>BATTERY</small><strong id="battery">28.0 Wh</strong></div><div><small>EXECUTED</small><strong id="steps-taken">0</strong></div><div><small>GRASP</small><strong id="grasp-status">NO</strong></div></div>
+    </div>
+    <div class="inspection-panel">
+      <div class="tabs" role="tablist"><button data-tab="ground" class="active" role="tab" aria-selected="true">Grounding</button><button data-tab="ir" role="tab" aria-selected="false">Task IR</button><button data-tab="trace" role="tab" aria-selected="false">Trace</button></div>
+      <div class="tab-content active" id="tab-ground" role="tabpanel"><p class="panel-hint">Evidence is generated from the simulated sensor/world state, not from an LLM.</p><div id="ground-evidence" class="evidence"><p class="empty">Compile a command to inspect evidence.</p></div></div>
+      <div class="tab-content" id="tab-ir" role="tabpanel"><p class="panel-hint">Unprivileged candidate. This JSON cannot authorize motors.</p><pre id="ir-output" class="json-block">{ "status": "IDLE" }</pre></div>
+      <div class="tab-content" id="tab-trace" role="tabpanel"><p class="panel-hint">Skill transitions and failures are logged in order.</p><div id="trace-output" class="trace"><div class="empty">No transitions yet.</div></div></div>
+      <div class="outcome"><small>SAFETY / MISSION DECISION</small><p id="sim-outcome">No task compiled yet.</p></div>
+    </div>
+  </div>
+  <div class="note dark-note"><b>Important:</b> Input is a small deterministic Vietnamese keyword parser, not microphone ASR. The world is a discrete grid, not SLAM, ROS 2, MoveIt or a physics simulation. “Nominal success” is an algorithmic trace, never an experimental robotics result.</div>
+</div></section>
+<section class="section light" id="ternary"><div class="wrap">
+  <p class="eyebrow ink">05 — Base27 & ternary representation</p><h2>27 symbols. Three trits.<br><em>No magical compression.</em></h2>
+  <div class="two-col"><p class="body-lg">With the illustrative alphabet A–Z plus SPACE, each symbol ID belongs to [0,26] and has a unique three-trit radix-3 representation (3³=27). The same digit sequence offset by −1 can be displayed as a balanced-trit tuple.</p><p class="body-lg">A 27-way symbol can also be stored in 5 binary bits. Three trits stored independently in two-bit fields need 6 bits; three-trit mathematical notation alone does not reduce FPGA BRAM, DSP count or MAC operations. This panel does <b>not</b> convert Unicode Vietnamese into CVNSS4.0.</p></div>
+  <div class="ternary-box"><div><label>ASCII A–Z + SPACE only <input id="base27-input" value="CVNSS FPGA" maxlength="50" spellcheck="false"></label><p id="base27-note" class="caption">Illustrative Base27 codebook; not a validated CVNSS4.0 encoder.</p><div class="ternary-metrics"><span id="symbols-count">0 symbols</span><span id="trits-count">0 trits</span><span id="bits-count">0 bits (5-bit IDs)</span></div></div><div class="trit-scroller"><table class="trit-table"><thead><tr><th>Glyph</th><th>ID</th><th>Radix-3</th><th>Balanced tuple</th></tr></thead><tbody id="trit-body"></tbody></table></div></div>
+</div></section>
+<section class="section" id="methods"><div class="wrap"><p class="eyebrow">06 — Experimental protocol</p><h2>Measure the entire mission.<br><em>Do not optimize an unproven claim.</em></h2>
+<div class="table-scroll"><table class="paper-table"><thead><tr><th>Variant</th><th>Language front-end</th><th>Same grounding / skills</th><th>Primary question</th></tr></thead><tbody>
+<tr><td>B0</td><td>Direct Vietnamese SLU</td><td>Yes</td><td>Is ASR even necessary for bounded commands?</td></tr>
+<tr><td>B1</td><td>Unicode ASR + typed parser</td><td>Yes</td><td>Baseline transcription-based system</td></tr>
+<tr><td>B2</td><td>Unicode ASR + context model</td><td>Yes</td><td>Gain from contextual reranking alone</td></tr>
+<tr><td>B3</td><td>Unicode ASR + CVNSS-FST + TinyLM</td><td>Yes</td><td>Incremental benefit or cost of CVNSS</td></tr>
+<tr><td>B4</td><td>Phoneme / tone ASR + intent head</td><td>Yes</td><td>Is phonetic output a better bridge?</td></tr>
+</tbody></table></div>
+<div class="contributions two">
+ <article class="feature"><div class="num">MEASURE</div><h3>Speech → action reliability</h3><p>Intent accuracy, slot F1, calibration, out-of-domain rejection, false execution, grounding false acceptance, grasp and return success, full mission success.</p></article>
+ <article class="feature"><div class="num">PROFILE</div><h3>FPGA–ARM economics</h3><p>Controller deadline misses, p95/p99 latency, execution energy, LUT, FF, BRAM, DSP, timing closure, power and model-memory footprint against CPU/MCU baselines.</p></article>
+</div>
+<div class="note"><b>Results status:</b> No real ASR WER, FPGA timing closure, BRAM savings, trained TinyLM, drone flight or certified safety results are claimed in this preprint release. Establish a CPU/MCU baseline, then run a documented ablation and hardware-in-the-loop study.</div>
+</div></section>
+<section class="section light" id="limitations"><div class="wrap"><p class="eyebrow ink">07 — Limitations and technical debt</p><h2>What can go wrong?</h2>
+<div class="table-scroll"><table class="paper-table"><thead><tr><th>Risk</th><th>Failure mode</th><th>Required mitigation</th></tr></thead><tbody>
+<tr><td>Speech ambiguity</td><td>Wrong object, location, or return reference</td><td>Confidence thresholds, clarifying questions, N-best trace</td></tr>
+<tr><td>Unbound grounding</td><td>Grasping an imagined object</td><td>Object ID, timestamp, confidence and reachability</td></tr>
+<tr><td>TOCTOU</td><td>Obstacle appears after static validation</td><td>Runtime monitor, stop and bounded replan</td></tr>
+<tr><td>LLM privilege escalation</td><td>Generated command drives actuators</td><td>Typed unprivileged IR, allowlisted skills, hardware interlock</td></tr>
+<tr><td>FPGA toolchain drift</td><td>Non-reproducible bitstream timing</td><td>Pin versions, timing reports, HIL regression</td></tr>
+<tr><td>CVNSS ambiguity</td><td>Information lost in reverse reconstruction</td><td>Candidate lattice, versioned codec, round-trip tests</td></tr>
+<tr><td>Sim-to-real gap</td><td>Demo success does not transfer</td><td>Robot-specific safety case and field testing</td></tr>
+</tbody></table></div>
+</div></section>
+<section class="section" id="references"><div class="wrap"><p class="eyebrow">08 — Research artifacts and references</p><h2>Reproducibility first.</h2>
+<div class="references">
+ <div><h3>Project artifacts</h3><p><a href="https://github.com/xulytiengviet/Semantic-to-Skill-Compiler-S2SC-">Source code and issue tracker ↗</a></p><p><a href="architecture.md">Full research methods, assumptions and specifications ↗</a></p><p><a href="../spec/SPEC.md">Technical specification v1.0 ↗</a></p><p><a href="../tests/s2sc.test.mjs">Deterministic unit tests ↗</a></p><button class="btn secondary" id="copy-bibtex">Copy BibTeX citation</button></div>
+ <div><h3>Foundational references</h3><ol>
+ <li><a href="https://cvnss.github.io/cvnss-guide/">Kiều Trường Lâm & Trần Tư Bình — CVNSS4.0 guide</a></li>
+ <li><a href="https://arxiv.org/abs/2204.01691">Ahn et al. — Do As I Can, Not As I Say (SayCan), 2022</a></li>
+ <li><a href="https://docs.nav2.org/">Nav2 — ROS 2 navigation and Behavior Trees</a></li>
+ <li><a href="https://moveit.github.io/moveit_task_constructor/">MoveIt Task Constructor — multi-stage manipulation</a></li>
+ <li><a href="https://www.nist.gov/itl/ai-risk-management-framework">NIST — AI Risk Management Framework</a></li></ol></div>
+</div></div></section>
+</main>
+<footer class="footer"><div class="wrap"><div class="footer-main"><strong>S2SC <small>v1.0 RESEARCH PROTOTYPE</small></strong><span>Vietnamese speech · Grounded tasks · Verified skill contracts · Hybrid FPGA–ARM</span></div><div class="footer-fine"><span>© 2026 Long Ngo · Original work MIT · Research proposal, not peer-reviewed · Not functional-safety certified</span><span>Semantic ≠ physical · Typed ≠ safe · Simulated ≠ measured</span></div></div></footer>
+<script type="module" src="./app.js"></script>
+</body></html>
