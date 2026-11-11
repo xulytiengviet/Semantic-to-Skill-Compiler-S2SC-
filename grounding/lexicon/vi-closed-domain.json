@@ -1,0 +1,24 @@
+{
+  "profile": "CVNSS4.0-G/1.1",
+  "kind": "research-starter-lexicon",
+  "scope": "closed-domain indoor mobile manipulation",
+  "frequencyNote": "No real corpus frequency has been measured; seedPriority is a manual engineering hypothesis.",
+  "entries": [
+    { "surface": "lấy", "role": "IMPERATIVE_VERB", "skillId": "grasp", "signature": "Grasp(ObjectID)", "seedPriority": 1 },
+    { "surface": "nhặt", "role": "IMPERATIVE_VERB", "skillId": "grasp", "signature": "Grasp(ObjectID)", "seedPriority": 2 },
+    { "surface": "đi", "role": "IMPERATIVE_VERB", "skillId": "navigate", "signature": "MoveTo(Pose)", "seedPriority": 2 },
+    { "surface": "dừng", "role": "IMPERATIVE_VERB", "skillId": "stop", "signature": "Stop()", "seedPriority": 1 },
+    { "surface": "cốc", "role": "NOUN", "ontologyClass": "cup", "seedPriority": 1 },
+    { "surface": "chai", "role": "NOUN", "ontologyClass": "bottle", "seedPriority": 2 },
+    { "surface": "bàn", "role": "NOUN", "ontologyClass": "table", "seedPriority": 2 },
+    { "surface": "cửa", "role": "NOUN", "ontologyClass": "door", "seedPriority": 3 },
+    { "surface": "đỏ", "role": "ADJECTIVE", "attributeKey": "color", "attributeValue": "red", "seedPriority": 1 },
+    { "surface": "xanh", "role": "ADJECTIVE", "attributeKey": "color", "attributeValue": "blue", "seedPriority": 1 },
+    { "surface": "này", "role": "DEICTIC", "seedPriority": 2 },
+    { "surface": "đó", "role": "DEICTIC", "seedPriority": 2 },
+    { "surface": "một", "role": "NUMERIC", "domainId": "count", "seedPriority": 2 },
+    { "surface": "hai", "role": "NUMERIC", "domainId": "count", "seedPriority": 2 },
+    { "surface": "hãy", "role": "FUNCTION", "seedPriority": 1 },
+    { "surface": "trên", "role": "FUNCTION", "seedPriority": 1 }
+  ]
+}

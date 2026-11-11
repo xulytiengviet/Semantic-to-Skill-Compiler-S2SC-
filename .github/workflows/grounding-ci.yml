@@ -1,0 +1,32 @@
+name: S2SC grounding obligations
+on:
+  push:
+    paths:
+      - 'grounding/**'
+      - '.github/workflows/grounding-ci.yml'
+      - 'package.json'
+  pull_request:
+    paths:
+      - 'grounding/**'
+      - '.github/workflows/grounding-ci.yml'
+      - 'package.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  grounding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: node --check grounding/src/index.mjs && node --check grounding/src/fixtures.mjs
+      - name: Falsification and obligations
+        run: node --test grounding/tests/*.test.mjs
+      - name: Transport and documentation present
+        run: |
+          test -s grounding/spec/GROUNDING.md
+          test -s grounding/spec/CVNSS4.0-G.schema.json
+          test -s grounding/lexicon/vi-closed-domain.json
