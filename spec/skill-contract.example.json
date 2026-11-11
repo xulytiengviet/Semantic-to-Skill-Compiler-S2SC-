@@ -1,0 +1,40 @@
+{
+  "skill_id": "NAVIGATE_TO_POSE",
+  "skill_version": "1.0.0",
+  "input": {
+    "goal": {
+      "frame_id": "map",
+      "x_m": 1,
+      "y_m": 1
+    },
+    "max_speed_mps": 0.25
+  },
+  "preconditions": [
+    "localization_fresh",
+    "path_exists",
+    "authorized"
+  ],
+  "invariants": [
+    "heartbeat_fresh",
+    "obstacle_policy_valid"
+  ],
+  "postconditions": [
+    "pose_error_within_tolerance"
+  ],
+  "timeout_ms": 30000,
+  "terminal_states": [
+    "SUCCEEDED",
+    "ABORTED",
+    "CANCELED"
+  ],
+  "failure_codes": [
+    "E_NO_PATH",
+    "E_RUNTIME_OBSTACLE",
+    "E_TIMEOUT",
+    "E_WATCHDOG"
+  ],
+  "recovery": {
+    "max_attempts": 1,
+    "action": "SAFE_STOP"
+  }
+}
